@@ -1,18 +1,29 @@
-Bouw een CDS ontwikkel omgeving met Docker
+Bouw een CDS ontwikkel omgeving (apacheds+postgres) met Docker, gebaseerd op Windows 7 en Ubuntu 14.04.1 LTS
 ===
 
-Installeer Boot2Docker
-Check CDS-BIJ12-Docker git project uit
+Installeer Virtual Box
+Maak een Ubuntu server VM
+Stel port forwarding in voor 22, 5432 en 10389
+Gebruik cygwin voor ssh sessie ```ssh  169.254.122.86```
+Installeer Guest Editions (zie ook http://askubuntu.com/questions/456400/why-cant-i-access-a-shared-folder-from-within-my-virtualbox-machine)
+
+Installeer Docker (zie https://docs.docker.com/installation/ubuntulinux/ -> Docker maintained package installation)
+Installeer Fig
+Fix probleem met Docker host, zie https://github.com/docker/fig/issues/88
+
+--> Zie snapshot
+Check CDS-BIJ12-Docker git project uit in windows
 Mount de root folder van het git project in VirtualBox
-In boot2docker mount de folder
+In ubuntu mount de folder naar /CDS-BIJ12-Docker
 ``` sh
 sudo mkdir /CDS-BIJ12-Docker
 sudo mount -t vboxsf -o uid=1000,gid=50 CDS-BIJ12-Docker /CDS-BIJ12-Docker
 ```
 
-De resources zijn nu beschikbaar onder 
+Zorg dat je op het Geodan netwerk zit (VPN of op lokatie)
+Start de containers met fig
+```
+cd /CDS-BIJ12-Docker
+fig -p vrn up
+```
 
-Upgrade docker naar alpha versie zodat docker up commando ondesteund wordt:
-zie https://github.com/docker/docker/issues/9459
-
-Tip: run boot2docker vanuit console2/cygwin shell
