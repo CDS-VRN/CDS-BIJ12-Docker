@@ -1,0 +1,8 @@
+dn: cn=admin,dc=inspire,dc=idgis,dc=eu
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+cn: admin
+sn: admin
+userPassword:: e3NoYX0wRFBpS3VOSXJyVm1EOElVQ3V3MWhReE5xWmM9

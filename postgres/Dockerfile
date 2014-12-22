@@ -12,24 +12,39 @@ RUN apt-get -y install language-pack-en
 # get sources
 ADD http://buildserver.geodan.nl/teamcity/guestAuth/repository/download/CdsAssembly_Build/72300:id/sql/create-database.sql /tmp/create-database.sql
 ADD http://buildserver.geodan.nl/teamcity/guestAuth/repository/download/CdsAssembly_Build/72300:id/sql/add-themes.sql /tmp/add-themes.sql
-RUN chmod +r /tmp/create-database.sql
-RUN chmod +r /tmp/add-themes.sql
+ADD https://raw.githubusercontent.com/CDS-VRN/CDS-BIJ12/master/vrn-themes/src/main/sql/1_create_schema.sql /tmp/1_create_schema.sql
+ADD https://raw.githubusercontent.com/CDS-VRN/CDS-BIJ12/master/vrn-themes/src/main/sql/2_vrn_ddl.sql /tmp/2_vrn_ddl.sql
+ADD https://raw.githubusercontent.com/CDS-VRN/CDS-BIJ12/master/vrn-themes/src/main/sql/3_create_constraints.sql /tmp/3_create_constraints.sql
+ADD https://raw.githubusercontent.com/CDS-VRN/CDS-BIJ12/master/vrn-themes/src/main/sql/4_create_indexes.sql /tmp/4_create_indexes.sql
+ADD https://raw.githubusercontent.com/CDS-VRN/CDS-BIJ12/master/vrn-themes/src/main/sql/5_insert_metadata.sql /tmp/5_insert_metadata.sql
+RUN chmod +r /tmp/*.sql
+
 
 # Run the remainder of the commands under the postgres user:
 USER postgres
+
+RUN echo "localhost:5432:cds:cds_owner:cds_owner"  >> ~/.pgpass && \
+    chmod 0600 ~/.pgpass
 
 RUN echo "host all all 0.0.0.0/0 md5" >> /etc/postgresql/9.3/main/pg_hba.conf
 
 RUN echo "listen_addresses='*'" >> /etc/postgresql/9.3/main/postgresql.conf
 
-# Create a CDS owner, postgis template and CDS database:
+# Create a CDS owner, postgis extendsion and CDS database:
 RUN /etc/init.d/postgresql start && \
         psql --command "CREATE USER inspire WITH PASSWORD 'inspire';" && \
+		psql --command "CREATE USER cds_owner WITH PASSWORD 'cds_owner';" && \
         psql --command "CREATE USER nagios;" && \
-        createdb -l en_US.UTF-8 -O inspire -E UTF-8 -T template0 cds && \
+        createdb -l en_US.UTF-8 -O cds_owner -E UTF-8 -T template0 cds && \
         psql -d cds --command "CREATE EXTENSION postgis;" && \
-        psql -d cds -f /tmp/create-database.sql && \
-        psql -d cds -f /tmp/add-themes.sql
+        psql -U cds_owner -h localhost -d cds -f /tmp/create-database.sql && \
+        psql -U cds_owner -h localhost -d cds -f /tmp/add-themes.sql && \
+		psql -d cds -f /tmp/1_create_schema.sql && \
+		psql -d cds --command "GRANT ALL ON SCHEMA vrn TO cds_owner;" && \
+		psql -U cds_owner -h localhost -d cds -f /tmp/2_vrn_ddl.sql && \
+		psql -U cds_owner -h localhost -d cds -f /tmp/3_create_constraints.sql && \
+		psql -U cds_owner -h localhost -d cds -f /tmp/4_create_indexes.sql && \
+		psql -U cds_owner -h localhost -d cds -f /tmp/5_insert_metadata.sql
 
 EXPOSE 5432
 
