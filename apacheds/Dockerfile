@@ -15,6 +15,7 @@ RUN /opt/apacheds-2.0.0-M19/bin/apacheds start default && \
 	/opt/apacheds-2.0.0-M19/bin/apacheds stop default && \
 	sleep 5 
 
+EXPOSE 10389
 
 
 ENTRYPOINT /opt/apacheds-2.0.0-M19/bin/apacheds console default
