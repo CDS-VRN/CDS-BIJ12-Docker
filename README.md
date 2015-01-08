@@ -8,11 +8,11 @@ Example: You develop on Windows (host OS), the VM (guest OS) will run Ubuntu 14.
 2. Install Vagrant https://www.vagrantup.com/downloads.html
 3. Checkout the git repository to your system.
 3. Use Vagrant to spin up the apacheds(LDAP) and postgres server (you can also do this using a Vagrant IntelliJ or Eclipse plugin):
-``
+
+```
 vagrant up
 (optional) vagrant provision # Provision docker containers if for some reason vagrant up did not already do that.
-(optional) vagrant ssh # SSH into the vagrant machine where the docker containers are running.
-``
+```
 
 The Postgres port 5432 as well as the LDAP port 10389 have been made available on the host OS (Windows).
 You can now run Tomcat locally and configure the application in such a way that it connects to the ports on the localhost.
