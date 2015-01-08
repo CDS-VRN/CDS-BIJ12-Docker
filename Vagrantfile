@@ -27,6 +27,9 @@ Vagrant.configure(2) do |config|
         args: "-p 10389:10389"
       d.run "vrn_postgres",
         args: "-p 5432:5432"
+      # TODO: Make this work with remote debugging. Use local Host OS tomcat installation for now.
+      # d.run "tomcat:7.0",
+      #   args: "-p 8080:8080 -p 1099:1099 --name=vrn_tomcat -it"
   end
 
   # Add all ports to be exposed to the host OS (all ports of containers you want to connect to).
