@@ -12,7 +12,27 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = ""
+  config.vm.box = "ubuntu/trusty64"
+
+  # Docker provisioning.
+  # Add all docker container build dirs below.
+  config.vm.provision "docker" do |d|
+      d.build_image "-t vrn_apacheds /vagrant/apacheds"
+      d.build_image "-t vrn_postgres /vagrant/postgres"
+  end
+
+  # Add all docker containers to run below.
+  config.vm.provision "docker" do |d|
+      d.run "vrn_apacheds",
+        args: "-p 10389:10389"
+      d.run "vrn_postgres",
+        args: "-p 5432:5432"
+  end
+
+  # Add all ports to be exposed to the host OS (all ports of containers you want to connect to).
+  [10389,5432].each do |port|
+      config.vm.network :forwarded_port, :host => port, :guest => port
+  end
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
