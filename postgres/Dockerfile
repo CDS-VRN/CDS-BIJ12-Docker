@@ -17,6 +17,7 @@ ADD https://raw.githubusercontent.com/CDS-VRN/CDS-BIJ12/master/vrn-themes/src/ma
 ADD https://raw.githubusercontent.com/CDS-VRN/CDS-BIJ12/master/vrn-themes/src/main/sql/3_create_constraints.sql /tmp/3_create_constraints.sql
 ADD https://raw.githubusercontent.com/CDS-VRN/CDS-BIJ12/master/vrn-themes/src/main/sql/4_create_indexes.sql /tmp/4_create_indexes.sql
 ADD https://raw.githubusercontent.com/CDS-VRN/CDS-BIJ12/master/vrn-themes/src/main/sql/5_insert_metadata.sql /tmp/5_insert_metadata.sql
+ADD https://raw.githubusercontent.com/CDS-VRN/CDS-BIJ12/master/vrn-themes/src/main/sql/6_insert_codemappings.sql /tmp/6_insert_codemappings.sql
 RUN chmod +r /tmp/*.sql
 
 
@@ -44,7 +45,8 @@ RUN /etc/init.d/postgresql start && \
 		psql -U cds_owner -h localhost -d cds -f /tmp/2_vrn_ddl.sql && \
 		psql -U cds_owner -h localhost -d cds -f /tmp/3_create_constraints.sql && \
 		psql -U cds_owner -h localhost -d cds -f /tmp/4_create_indexes.sql && \
-		psql -U cds_owner -h localhost -d cds -f /tmp/5_insert_metadata.sql
+		psql -U cds_owner -h localhost -d cds -f /tmp/5_insert_metadata.sql && \
+		psql -U cds_owner -h localhost -d cds -f /tmp/6_insert_codemappings.sql
 
 EXPOSE 5432
 

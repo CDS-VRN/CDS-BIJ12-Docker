@@ -21,16 +21,30 @@ Vagrant.configure(2) do |config|
       d.build_image "-t vrn_postgres /vagrant/postgres"
   end
 
+  # Remove old containers here so they always get updated to the newest image!
+  # This probably can be done more concise, but I am not a Ruby expert.
+  custom_docker = "docker stop vrn_postgres; docker rm vrn_postgres; exit 0"
+  config.vm.provision "shell",
+      inline: custom_docker
+
+  custom_docker = "docker stop vrn_apacheds; docker rm vrn_apacheds; exit 0"
+  config.vm.provision "shell",
+      inline: custom_docker
+
+
   # Add all docker containers to run below.
   config.vm.provision "docker" do |d|
+
       d.run "vrn_apacheds",
         args: "-p 10389:10389"
       d.run "vrn_postgres",
         args: "-p 5432:5432"
+
       # TODO: Make this work with remote debugging. Use local Host OS tomcat installation for now.
       # d.run "tomcat:7.0",
       #   args: "-p 8080:8080 -p 1099:1099 --name=vrn_tomcat -it"
   end
+
 
   # Add all ports to be exposed to the host OS (all ports of containers you want to connect to).
   [10389,5432].each do |port|
