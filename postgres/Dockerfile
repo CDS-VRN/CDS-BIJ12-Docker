@@ -10,8 +10,8 @@ RUN apt-get -y install postgresql-9.3-postgis
 RUN apt-get -y install language-pack-en
 
 # get sources
-ADD http://buildserver.geodan.nl/teamcity/guestAuth/repository/download/CdsAssembly_Build/72300:id/sql/create-database.sql /tmp/create-database.sql
-ADD http://buildserver.geodan.nl/teamcity/guestAuth/repository/download/CdsAssembly_Build/72300:id/sql/add-themes.sql /tmp/add-themes.sql
+ADD http://ftp.geodan.nl/vrn/sql/create-database.sql /tmp/create-database.sql
+ADD http://ftp.geodan.nl/vrn/sql/add-themes.sql /tmp/add-themes.sql
 ADD https://raw.githubusercontent.com/CDS-VRN/CDS-BIJ12/master/vrn-themes/src/main/sql/1_create_schema.sql /tmp/1_create_schema.sql
 ADD https://raw.githubusercontent.com/CDS-VRN/CDS-BIJ12/master/vrn-themes/src/main/sql/2_vrn_ddl.sql /tmp/2_vrn_ddl.sql
 ADD https://raw.githubusercontent.com/CDS-VRN/CDS-BIJ12/master/vrn-themes/src/main/sql/3_create_constraints.sql /tmp/3_create_constraints.sql
