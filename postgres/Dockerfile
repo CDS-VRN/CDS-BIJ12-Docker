@@ -12,13 +12,6 @@ RUN apt-get -y install language-pack-en
 # get sources
 ADD http://ftp.geodan.nl/vrn/sql/create-database.sql /tmp/create-database.sql
 ADD http://ftp.geodan.nl/vrn/sql/add-themes.sql /tmp/add-themes.sql
-ADD https://raw.githubusercontent.com/CDS-VRN/CDS-BIJ12/master/vrn-themes/src/main/sql/1_create_schema.sql /tmp/1_create_schema.sql
-ADD https://raw.githubusercontent.com/CDS-VRN/CDS-BIJ12/master/vrn-themes/src/main/sql/2_vrn_ddl.sql /tmp/2_vrn_ddl.sql
-ADD https://raw.githubusercontent.com/CDS-VRN/CDS-BIJ12/master/vrn-themes/src/main/sql/3_create_constraints.sql /tmp/3_create_constraints.sql
-ADD https://raw.githubusercontent.com/CDS-VRN/CDS-BIJ12/master/vrn-themes/src/main/sql/4_create_indexes.sql /tmp/4_create_indexes.sql
-ADD https://raw.githubusercontent.com/CDS-VRN/CDS-BIJ12/master/vrn-themes/src/main/sql/5_insert_metadata.sql /tmp/5_insert_metadata.sql
-ADD https://raw.githubusercontent.com/CDS-VRN/CDS-BIJ12/master/vrn-themes/src/main/sql/6_insert_codemappings.sql /tmp/6_insert_codemappings.sql
-ADD https://raw.githubusercontent.com/CDS-VRN/CDS-BIJ12/master/vrn-themes/src/main/sql/7_grant_tables.sql /tmp/7_grant_tables.sql
 RUN chmod +r /tmp/*.sql
 
 
@@ -41,14 +34,7 @@ RUN /etc/init.d/postgresql start && \
         psql -d cds --command "CREATE EXTENSION postgis;" && \
         psql -U cds_owner -h localhost -d cds -f /tmp/create-database.sql && \
         psql -U cds_owner -h localhost -d cds -f /tmp/add-themes.sql && \
-		psql -d cds -f /tmp/1_create_schema.sql && \
-		psql -d cds --command "GRANT ALL ON SCHEMA vrn TO cds_owner;" && \
-		psql -U cds_owner -h localhost -d cds -f /tmp/2_vrn_ddl.sql && \
-		psql -U cds_owner -h localhost -d cds -f /tmp/3_create_constraints.sql && \
-		psql -U cds_owner -h localhost -d cds -f /tmp/4_create_indexes.sql && \
-		psql -U cds_owner -h localhost -d cds -f /tmp/5_insert_metadata.sql && \
-		psql -U cds_owner -h localhost -d cds -f /tmp/6_insert_codemappings.sql
-		psql -U cds_owner -h localhost -d cds -f /tmp/7_grant_tables.sql
+		psql -d cds --command "GRANT ALL ON SCHEMA vrn TO cds_owner;"
 
 EXPOSE 5432
 
