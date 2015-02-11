@@ -6,8 +6,7 @@ COPY ./config.ldif /var/lib/apacheds-2.0.0-M19/default/conf/
 COPY ./admin.ldif /tmp/admin.ldif
 
 #load default users and groups
-ADD https://raw.githubusercontent.com/CDS-VRN/CDS-Assembly/vrn-assembly-acc/src/main/docker/cds-ldap/ldap-init.ldif
-/root/ldap-init.ldif
+ADD https://raw.githubusercontent.com/CDS-VRN/CDS-Assembly/vrn-assembly-acc/src/main/docker/cds-ldap/ldap-init.ldif /root/ldap-init.ldif
 RUN /opt/apacheds-2.0.0-M19/bin/apacheds start default && \
     sleep 20 && \
 	ldapadd -h localhost -p 10389 -w secret -f /root/ldap-init.ldif -D uid=admin,ou=system -c && \
