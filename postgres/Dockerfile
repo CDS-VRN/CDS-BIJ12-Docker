@@ -34,7 +34,8 @@ RUN /etc/init.d/postgresql start && \
         psql -d cds --command "CREATE EXTENSION postgis;" && \
         psql -U cds_owner -h localhost -d cds -f /tmp/create-database.sql && \
         psql -U cds_owner -h localhost -d cds -f /tmp/add-themes.sql && \
-		psql -d cds --command "GRANT ALL ON SCHEMA vrn TO cds_owner;"
+		psql -d cds --command "GRANT ALL ON SCHEMA vrn TO cds_owner;" && \
+		psql -d cds --command "INSERT INTO manager.gebruiker (gebruikersnaam, superuser) VALUES ('admin', true);"
 
 EXPOSE 5432
 

@@ -10,7 +10,7 @@ ADD https://raw.githubusercontent.com/CDS-VRN/CDS-Assembly/vrn-assembly-acc/src/
 RUN /opt/apacheds-2.0.0-M19/bin/apacheds start default && \
     sleep 20 && \
 	ldapadd -h localhost -p 10389 -w secret -f /root/ldap-init.ldif -D uid=admin,ou=system -c && \
-	#ldapadd -h localhost -p 10389 -w secret -f /tmp/admin.ldif -D uid=admin,ou=system -c && \
+	ldapadd -h localhost -p 10389 -w secret -f /tmp/admin.ldif -D uid=admin,ou=system -c && \
 	sleep 5 && \
 	/opt/apacheds-2.0.0-M19/bin/apacheds stop default && \
 	sleep 5 
